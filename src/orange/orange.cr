@@ -9,9 +9,9 @@ module Orange
     Deny = 1_u8
   end
 
-  enum Traffic : UInt8
-    HTTP  = 0_u8
-    HTTPS = 1_u8
+  enum Traffic : Int32
+    HTTP  =  80_i32
+    HTTPS = 443_i32
   end
 
   class AuthenticationFailed < Exception
