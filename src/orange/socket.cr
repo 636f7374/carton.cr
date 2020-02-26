@@ -1,9 +1,8 @@
 module Orange
   class Socket < IO
-    getter dnsResolver : Durian::Resolver
     property wrapped : IO
 
-    def initialize(@wrapped : IO, @dnsResolver : Durian::Resolver)
+    def initialize(@wrapped : IO)
     end
 
     def client_authentication=(value : Authentication)
