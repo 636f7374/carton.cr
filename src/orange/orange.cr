@@ -32,6 +32,9 @@ module Orange
   class UnEstablish < Exception
   end
 
+  class MismatchFlag < Exception
+  end
+
   class SimpleAuth
     property userName : String
     property password : String
