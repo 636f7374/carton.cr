@@ -131,7 +131,7 @@ end
 ```
 
 ```text
-Orange::Summary(@clientAuthentication=Basic, @remoteAddress=#<Orange::RemoteAddress:0x10c76cc20 @address="www.google.com", @port=80>, @requestPayload=#<HTTP::Request:0x10c773cb0 @method="GET", @headers=HTTP::Headers{"Host" => "www.google.com", "Proxy-Authorization" => "Basic YWRtaW46YWJjMTIz", "User-Agent" => "curl/7.68.0", "Accept" => "*/*", "Proxy-Connection" => "Keep-Alive"}, @body=nil, @version="HTTP/1.1", @cookies=nil, @query_params=nil, @uri=nil, @remote_address=nil, @expect_continue=false, @resource="http://www.google.com/">, @trafficType=HTTP, @tunnelMode=false)
+STDOUT.puts context.summary # => Orange::Summary(@clientAuthentication=Basic, @remoteAddress=#<Orange::RemoteAddress:0x10c76cc20 @address="www.google.com", @port=80>, @requestPayload=#<HTTP::Request:0x10c773cb0 @method="GET", @headers=HTTP::Headers{"Host" => "www.google.com", "Proxy-Authorization" => "Basic YWRtaW46YWJjMTIz", "User-Agent" => "curl/7.68.0", "Accept" => "*/*", "Proxy-Connection" => "Keep-Alive"}, @body=nil, @version="HTTP/1.1", @cookies=nil, @query_params=nil, @uri=nil, @remote_address=nil, @expect_continue=false, @resource="http://www.google.com/">, @trafficType=HTTP, @tunnelMode=false)
 ```
 
 ### Used as Shard
