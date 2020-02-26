@@ -84,7 +84,7 @@ module Orange
 
     def accept? : Socket?
       return unless socket = wrapped.accept?
-      _socket = Socket.new socket, dnsResolver
+      _socket = Socket.new socket
 
       # Attach
       on_auth.try { |_on_auth| _socket.on_auth = _on_auth }
