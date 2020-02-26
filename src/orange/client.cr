@@ -1,21 +1,20 @@
 module Orange
   class Client < IO
-    getter dnsResolver : Durian::Resolver
     property wrapped : IO
 
-    def initialize(@wrapped : IO, @dnsResolver : Durian::Resolver)
+    def initialize(@wrapped : IO)
     end
 
     def self.new(host : String, port : Int32, dnsResolver : Durian::Resolver, connectTimeout : Int | Float? = nil)
       wrapped = Durian::TCPSocket.connect host, port, dnsResolver, connectTimeout
 
-      new wrapped, dnsResolver
+      new wrapped
     end
 
     def self.new(ip_address : ::Socket::IPAddress, dnsResolver : Durian::Resolver, connectTimeout : Int | Float? = nil)
       wrapped = TCPSocket.connect ip_address, connectTimeout
 
-      new wrapped, dnsResolver
+      new wrapped
     end
 
     def self.new(host : String, port : Int32, dnsResolver : Durian::Resolver, timeout : TimeOut = TimeOut.new)
@@ -23,7 +22,7 @@ module Orange
       wrapped.read_timeout = timeout.read
       wrapped.write_timeout = timeout.write
 
-      new wrapped, dnsResolver
+      new wrapped
     end
 
     def self.new(ip_address : ::Socket::IPAddress, dnsResolver : Durian::Resolver, timeout : TimeOut = TimeOut.new)
@@ -31,7 +30,7 @@ module Orange
       wrapped.read_timeout = timeout.read
       wrapped.write_timeout = timeout.write
 
-      new wrapped, dnsResolver
+      new wrapped
     end
 
     def on_auth=(value : SimpleAuth)
