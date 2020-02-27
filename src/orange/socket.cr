@@ -165,19 +165,17 @@ module Orange
     end
 
     def set_connect_information!(request : HTTP::Request)
-      raise MismatchFlag.new unless host = request.headers["Host"]?
-      self.request_payload = request
+      host = request.connect_host || request.header_host
+      raise MismatchFlag.new unless host
 
-      self.tunnel_mode = request.connect?
-      self.traffic_type = Traffic::HTTP unless tunnel_mode
-
-      address_port = host.rpartition ":"
-      port = address_port.last.to_i?
       port = 80_i32 if traffic_type == Traffic::HTTP
+      port = request.connect_port || request.header_port
       raise UnknownFlag.new unless port
 
-      address = tunnel_mode ? address_port.first : address_port.last
-      self.remote_address = RemoteAddress.new address, port
+      self.remote_address = RemoteAddress.new host, port
+      self.request_payload = request
+      self.tunnel_mode = request.connect?
+      self.traffic_type = Traffic::HTTP unless tunnel_mode
     end
 
     def handshake! : Verify
