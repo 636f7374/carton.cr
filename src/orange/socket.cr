@@ -61,8 +61,8 @@ module Orange
       @trafficType
     end
 
-    def summary
-      Summary.from_socket self
+    def stats
+      Stats.from_socket self
     end
 
     def read_timeout=(value : Int | Float | Time::Span | Nil)

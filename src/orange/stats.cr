@@ -1,4 +1,4 @@
-struct Orange::Summary
+struct Orange::Stats
   def initialize
   end
 
@@ -35,14 +35,14 @@ struct Orange::Summary
   end
 
   def self.from_socket(socket : Socket)
-    summary = new
+    stats = new
 
-    summary.client_authentication = socket.client_authentication
-    summary.remote_address = socket.remote_address
-    summary.request_payload = socket.request_payload
-    summary.tunnel_mode = socket.tunnel_mode
-    summary.traffic_type = socket.traffic_type
+    stats.client_authentication = socket.client_authentication
+    stats.remote_address = socket.remote_address
+    stats.request_payload = socket.request_payload
+    stats.tunnel_mode = socket.tunnel_mode
+    stats.traffic_type = socket.traffic_type
 
-    summary
+    stats
   end
 end
