@@ -44,7 +44,7 @@ module Orange
       server.close rescue nil
     end
 
-    def transport
+    def all_transport
       transport client, server
     end
 
@@ -72,7 +72,7 @@ module Orange
         return all_close
       end
 
-      transport
+      all_transport
     end
 
     def client_establish
