@@ -17,7 +17,7 @@
 
 ## Description
 
-* a Simple and reliable HTTP Proxy Client and Server, Easy to use.
+* a Reliable HTTP Proxy Client and Server, Easy to use.
   * Client and server using pluggable design, Easy for you to adjust.
   * Crystal native DNS resolver, faster and more stable.
   * It also supports the expansion Man-in-the-middle Toolkit.
@@ -26,7 +26,7 @@
   * [mamantoha / http_proxy](https://github.com/mamantoha/http_proxy)
   * These designs did not meet my project standards, so I redesigned it.
 * If you want to use SOCKS5? I have successfully developed.
-  * [🚧 WIP - Crystal SOCKS5 Client and Server](https://github.com/636f7374/tomato.cr)
+  * [⛵️ Available - Crystal SOCKS5 Client and Server](https://github.com/636f7374/tomato.cr)
 
 ## Features
 
