@@ -1,7 +1,7 @@
 require "../src/orange.cr"
 
 def handle_client(context : Orange::Context)
-  STDOUT.puts context.summary
+  STDOUT.puts context.stats
 
   context.perform
 end

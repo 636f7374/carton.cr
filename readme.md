@@ -59,9 +59,12 @@ resolver.ip_cache = Durian::Cache::IPAddress.new
 
 # Orange
 begin
+
   client = Orange::Client.new "0.0.0.0", 1234_i32, resolver
-  client.authentication = Orange::Authentication::Basic
-  client.on_auth = Orange::SimpleAuth.new "admin", "abc123"
+
+  # Authentication (Optional)
+  # client.authentication = Orange::Authentication::Basic
+  # client.on_auth = Orange::SimpleAuth.new "admin", "abc123"
 
   # Handshake
   client.connect! "www.example.com", 80_i32
@@ -91,7 +94,7 @@ client.try &.close
 require "orange"
 
 def handle_client(context : Orange::Context)
-  STDOUT.puts context.summary
+  STDOUT.puts context.stats
 
   context.perform
 end
