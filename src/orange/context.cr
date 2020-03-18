@@ -52,7 +52,7 @@ module Orange
       raise UnEstablish.new unless clientEstablish
       raise UnknownFlag.new unless remote_address = client.remote_address
 
-      host = remote_address.address
+      host = remote_address.host
       port = remote_address.port
       remote = Durian::TCPSocket.connect host, port, dnsResolver, timeout.connect
 
