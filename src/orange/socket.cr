@@ -168,8 +168,8 @@ module Orange
       host = request.connect_host || request.header_host
       raise MismatchFlag.new unless host
 
-      port = 80_i32 if traffic_type == Traffic::HTTP
-      port = request.connect_port || request.header_port
+      port = request.regular_port
+      port = traffic_type.try &.to_i unless port
       raise UnknownFlag.new unless port
 
       self.remote_address = RemoteAddress.new host, port
