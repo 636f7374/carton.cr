@@ -61,6 +61,14 @@ module Orange
       @trafficType
     end
 
+    def extract_size=(value : Int32)
+      @extractSize = value
+    end
+
+    def extract_size
+      @extractSize || 0_i32
+    end
+
     def stats
       Stats.from_socket self
     end
@@ -218,6 +226,7 @@ module Orange
       _http_payload = request.is_a? HTTP::Request
       self.wrapped = _wrapped
       self.traffic_type = _http_payload ? Traffic::HTTP : Traffic::HTTPS
+      self.extract_size = _extract.size
     end
 
     def establish!
