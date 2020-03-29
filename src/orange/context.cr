@@ -4,19 +4,19 @@ module Orange
     getter dnsResolver : Durian::Resolver
     property timeout : TimeOut
     property clientEstablish : Bool
-    property server : IO
+    property remote : IO
 
     def initialize(@client : Socket, @dnsResolver : Durian::Resolver, @timeout : TimeOut = TimeOut.new)
       @clientEstablish = false
-      @server = Orange.empty_io
+      @remote = Orange.empty_io
     end
 
-    def server=(value : IO)
-      @server = value
+    def remote=(value : IO)
+      @remote = value
     end
 
-    def server
-      @server
+    def remote
+      @remote
     end
 
     private def uploaded_size=(value : UInt64)
@@ -39,8 +39,8 @@ module Orange
       Stats.from_socket client
     end
 
-    def connect_server!
-      return unless server.is_a? IO::Memory if server
+    def connect_remote!
+      return unless remote.is_a? IO::Memory if remote
       raise UnEstablish.new unless clientEstablish
       raise UnknownFlag.new unless remote_address = client.remote_address
 
@@ -48,7 +48,7 @@ module Orange
       port = remote_address.port
       remote = Durian::TCPSocket.connect host, port, dnsResolver, timeout.connect
 
-      self.server = remote
+      self.remote = remote
       remote.read_timeout = timeout.read
       remote.write_timeout = timeout.write
 
@@ -57,14 +57,14 @@ module Orange
 
     def all_close
       client.close rescue nil
-      server.close rescue nil
+      remote.close rescue nil
     end
 
     def transport
-      all_transport client, server
+      all_transport client, remote
     end
 
-    def all_transport(client, server : IO)
+    def all_transport(client, remote : IO)
       spawn do
         length = begin
           IO.copy client, remote, true
@@ -103,7 +103,7 @@ module Orange
 
     def perform
       begin
-        connect_server!
+        connect_remote!
       rescue ex
         return all_close
       end
