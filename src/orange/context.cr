@@ -35,6 +35,14 @@ module Orange
       @receivedSize
     end
 
+    private def maximum_timed_out=(value : Int32)
+      @maximumTimedOut = value
+    end
+
+    private def maximum_timed_out
+      @maximumTimedOut || 64_i32
+    end
+
     def stats
       Stats.from_socket client
     end
@@ -64,8 +72,18 @@ module Orange
       all_transport client, remote
     end
 
+    # I ’m going to make a long talk here, about why I did this (all_transport)
+    # Some time ago, I found that if the client is writing data to Remote, if Remote is also reading at the same time, it will trigger the problem of read timeout, and vice versa.
+    # So far, I still don't know if it is a bad implementation of Crystal (IO::Evented).
+    # So I thought of this solution.
+    # When the timeout is triggered, immediately check whether the other party (upload / receive) has completed the transmission, otherwise continue to loop IO.copy.
+    # At the same time, in order to avoid the infinite loop problem, I added the maximum number of attempts.
+    # This ensures that there is no disconnection when transferring data for a long time.
+    # Taking a 30-second timeout as an example, 30 * maximum number of attempts (default: 64) = 1920 seconds
+
     def all_transport(client, remote : IO)
       spawn do
+        timed_out_counter = 0_u64
         exception = nil
         count = 0_u64
 
@@ -80,11 +98,10 @@ module Orange
           end
 
           size.try { |_size| count += _size }
-
-          if exception && count.try &.zero?
-            break unless exception.is_a? IO::Timeout
-            next unless received_size
-          end
+          break if maximum_timed_out <= timed_out_counter
+          break unless exception.is_a? IO::Timeout if exception
+          timed_out_counter += 1_i32
+          next sleep 0.05_f32.seconds unless received_size if exception
 
           break
         end
@@ -93,6 +110,7 @@ module Orange
       end
 
       spawn do
+        timed_out_counter = 0_u64
         exception = nil
         count = 0_u64
 
@@ -107,11 +125,10 @@ module Orange
           end
 
           size.try { |_size| count += _size }
-
-          if exception && count.try &.zero?
-            break unless exception.is_a? IO::Timeout
-            next unless uploaded_size
-          end
+          break if maximum_timed_out <= timed_out_counter
+          break unless exception.is_a? IO::Timeout if exception
+          timed_out_counter += 1_i32
+          next sleep 0.05_f32.seconds unless uploaded_size if exception
 
           break
         end
