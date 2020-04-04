@@ -33,7 +33,7 @@ module Orange
       new wrapped
     end
 
-    def on_auth=(value : SimpleAuth)
+    def on_auth=(value : AuthenticationEntry)
       @onAuth = value
     end
 

@@ -35,11 +35,11 @@ module Orange
   class MismatchFlag < Exception
   end
 
-  class SimpleAuth
+  class AuthenticationEntry
     property userName : String
-    property password : String
+    property password : String?
 
-    def initialize(@userName : String, @password : String)
+    def initialize(@userName : String, @password : String?)
     end
   end
 

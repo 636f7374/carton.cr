@@ -21,7 +21,7 @@ module Orange
       @authentication || Authentication::None
     end
 
-    def on_auth=(value : Proc(String, String, Orange::Verify))
+    def on_auth=(value : Proc(String, String?, Orange::Verify))
       @onAuth = value
     end
 
