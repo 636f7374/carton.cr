@@ -64,7 +64,7 @@ begin
 
   # Authentication (Optional)
   # client.authentication = Orange::Authentication::Basic
-  # client.on_auth = Orange::SimpleAuth.new "admin", "abc123"
+  # client.on_auth = Orange::AuthenticationEntry.new "admin", "abc123"
 
   # Handshake
   client.connect! "www.example.com", 80_i32
