@@ -99,7 +99,7 @@ module Orange
 
           size.try { |_size| count += _size }
           break if maximum_timed_out <= timed_out_counter
-          break unless exception.is_a? IO::Timeout if exception
+          break unless exception.is_a? IO::TimeoutError if exception
           timed_out_counter += 1_i32
           next sleep 0.05_f32.seconds unless received_size if exception
 
@@ -126,7 +126,7 @@ module Orange
 
           size.try { |_size| count += _size }
           break if maximum_timed_out <= timed_out_counter
-          break unless exception.is_a? IO::Timeout if exception
+          break unless exception.is_a? IO::TimeoutError if exception
           timed_out_counter += 1_i32
           next sleep 0.05_f32.seconds unless uploaded_size if exception
 
