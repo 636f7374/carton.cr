@@ -1,4 +1,4 @@
-module Orange
+module Carton
   enum Authentication : UInt8
     None  = 0_u8
     Basic = 1_u8

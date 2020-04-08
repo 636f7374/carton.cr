@@ -1,4 +1,4 @@
-require "../src/orange.cr"
+require "../src/carton.cr"
 
 # Durian
 servers = [] of Tuple(Socket::IPAddress, Durian::Protocol)
@@ -7,13 +7,13 @@ servers << Tuple.new Socket::IPAddress.new("1.1.1.1", 53_i32), Durian::Protocol:
 resolver = Durian::Resolver.new servers
 resolver.ip_cache = Durian::Cache::IPAddress.new
 
-# Orange
+# Carton
 begin
-  client = Orange::Client.new "0.0.0.0", 1234_i32, resolver
+  client = Carton::Client.new "0.0.0.0", 1234_i32, resolver
 
   # Authentication (Optional)
-  # client.authentication = Orange::Authentication::Basic
-  # client.on_auth = Orange::AuthenticationEntry.new "admin", "abc123"
+  # client.authentication = Carton::Authentication::Basic
+  # client.on_auth = Carton::AuthenticationEntry.new "admin", "abc123"
 
   # Handshake
   client.connect! "www.example.com", 80_i32

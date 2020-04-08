@@ -1,4 +1,4 @@
-struct Orange::Stats
+struct Carton::Stats
   def initialize
   end
 

@@ -1,4 +1,4 @@
-module Orange
+module Carton
   class Server
     getter wrapped : ::Socket::Server
     getter dnsResolver : Durian::Resolver
@@ -14,7 +14,7 @@ module Orange
       @authentication || Authentication::None
     end
 
-    def on_auth=(value : Proc(String, String?, Orange::Verify))
+    def on_auth=(value : Proc(String, String?, Carton::Verify))
       @onAuth = value
     end
 

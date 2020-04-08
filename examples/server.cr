@@ -1,6 +1,6 @@
-require "../src/orange.cr"
+require "../src/carton.cr"
 
-def handle_client(context : Orange::Context)
+def handle_client(context : Carton::Context)
   STDOUT.puts context.stats
 
   context.perform
@@ -13,26 +13,26 @@ servers << Tuple.new Socket::IPAddress.new("1.1.1.1", 53_i32), Durian::Protocol:
 resolver = Durian::Resolver.new servers
 resolver.ip_cache = Durian::Cache::IPAddress.new
 
-# Orange
+# Carton
 tcp_server = TCPServer.new "0.0.0.0", 1234_i32
-orange = Orange::Server.new tcp_server, resolver
-orange.authentication = Orange::Authentication::None
-orange.client_timeout = Orange::TimeOut.new
-orange.remote_timeout = Orange::TimeOut.new
+carton = Carton::Server.new tcp_server, resolver
+carton.authentication = Carton::Authentication::None
+carton.client_timeout = Carton::TimeOut.new
+carton.remote_timeout = Carton::TimeOut.new
 
 # Authentication (Optional)
-# orange.authentication = Orange::Authentication::Basic
-# orange.on_auth = ->(user_name : String, password : String) do
+# carton.authentication = Carton::Authentication::Basic
+# carton.on_auth = ->(user_name : String, password : String) do
 #  STDOUT.puts [user_name, password]
-#  Orange::Verify::Pass
+#  Carton::Verify::Pass
 # end
 
 loop do
-  socket = orange.accept?
+  socket = carton.accept?
 
   spawn do
     next unless client = socket
-    next unless context = orange.upgrade client
+    next unless context = carton.upgrade client
 
     handle_client context
   end

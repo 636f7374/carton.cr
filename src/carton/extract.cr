@@ -1,4 +1,4 @@
-module Orange
+module Carton
   class Extract < IO
     property extract : IO::Memory
     property wrapped : IO

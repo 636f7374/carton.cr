@@ -1,18 +1,18 @@
 <div align = "center"><img src="images/icon.png" width="256" height="256" /></div>
 
 <div align = "center">
-  <h1>Orange.cr - HTTP Proxy Client with Server</h1>
+  <h1>Carton.cr - HTTP Proxy Client with Server</h1>
 </div>
 
 <p align="center">
   <a href="https://crystal-lang.org">
     <img src="https://img.shields.io/badge/built%20with-crystal-000000.svg" /></a>
-  <a href="https://travis-ci.org/636f7374/orange.cr">
-    <img src="https://api.travis-ci.org/636f7374/orange.cr.svg" /></a>
-  <a href="https://github.com/636f7374/orange.cr/releases">
-    <img src="https://img.shields.io/github/release/636f7374/orange.cr.svg" /></a>
-  <a href="https://github.com/636f7374/orange.cr/blob/master/license">
-    <img src="https://img.shields.io/github/license/636f7374/orange.cr.svg"></a>
+  <a href="https://travis-ci.org/636f7374/carton.cr">
+    <img src="https://api.travis-ci.org/636f7374/carton.cr.svg" /></a>
+  <a href="https://github.com/636f7374/carton.cr/releases">
+    <img src="https://img.shields.io/github/release/636f7374/carton.cr.svg" /></a>
+  <a href="https://github.com/636f7374/carton.cr/blob/master/license">
+    <img src="https://img.shields.io/github/license/636f7374/carton.cr.svg"></a>
 </p>
 
 ## Description
@@ -41,14 +41,14 @@
 
 ## Tips
 
-* Why is it named `Orange.cr`? it's just random six-word English words.
+* Why is it named `Carton.cr`? it's just random six-word English words.
 
 ## Usage
 
 * Simple Client
 
 ```crystal
-require "orange"
+require "carton"
 
 # Durian
 servers = [] of Tuple(Socket::IPAddress, Durian::Protocol)
@@ -57,14 +57,14 @@ servers << Tuple.new Socket::IPAddress.new("1.1.1.1", 53_i32), Durian::Protocol:
 resolver = Durian::Resolver.new servers
 resolver.ip_cache = Durian::Cache::IPAddress.new
 
-# Orange
+# Carton
 begin
 
-  client = Orange::Client.new "0.0.0.0", 1234_i32, resolver
+  client = Carton::Client.new "0.0.0.0", 1234_i32, resolver
 
   # Authentication (Optional)
-  # client.authentication = Orange::Authentication::Basic
-  # client.on_auth = Orange::AuthenticationEntry.new "admin", "abc123"
+  # client.authentication = Carton::Authentication::Basic
+  # client.on_auth = Carton::AuthenticationEntry.new "admin", "abc123"
 
   # Handshake
   client.connect! "www.example.com", 80_i32
@@ -91,9 +91,9 @@ client.try &.close
 * Simple Server
 
 ```crystal
-require "orange"
+require "carton"
 
-def handle_client(context : Orange::Context)
+def handle_client(context : Carton::Context)
   STDOUT.puts context.stats
 
   context.perform
@@ -106,26 +106,26 @@ servers << Tuple.new Socket::IPAddress.new("1.1.1.1", 53_i32), Durian::Protocol:
 resolver = Durian::Resolver.new servers
 resolver.ip_cache = Durian::Cache::IPAddress.new
 
-# Orange
+# Carton
 tcp_server = TCPServer.new "0.0.0.0", 1234_i32
-orange = Orange::Server.new tcp_server, resolver
-orange.authentication = Orange::Authentication::None
-orange.client_timeout = Orange::TimeOut.new
-orange.remote_timeout = Orange::TimeOut.new
+carton = Carton::Server.new tcp_server, resolver
+carton.authentication = Carton::Authentication::None
+carton.client_timeout = Carton::TimeOut.new
+carton.remote_timeout = Carton::TimeOut.new
 
 # Authentication (Optional)
-# orange.authentication = Orange::Authentication::Basic
-# orange.on_auth = ->(user_name : String, password : String) do
+# carton.authentication = Carton::Authentication::Basic
+# carton.on_auth = ->(user_name : String, password : String) do
 #  STDOUT.puts [user_name, password]
-#  Orange::Verify::Pass
+#  Carton::Verify::Pass
 # end
 
 loop do
-  socket = orange.accept?
+  socket = carton.accept?
 
   spawn do
     next unless client = socket
-    next unless context = orange.upgrade client
+    next unless context = carton.upgrade client
 
     handle_client context
   end
@@ -134,7 +134,7 @@ end
 ```
 
 ```crystal
-STDOUT.puts context.stats # => Orange::Stats(@clientAuthentication=Basic, @remoteAddress=#<Orange::RemoteAddress:0x10c76cc20 @address="www.google.com", @port=80>, @requestPayload=#<HTTP::Request:0x10c773cb0 @method="GET", @headers=HTTP::Headers{"Host" => "www.google.com", "Proxy-Authorization" => "Basic YWRtaW46YWJjMTIz", "User-Agent" => "curl/7.68.0", "Accept" => "*/*", "Proxy-Connection" => "Keep-Alive"}, @body=nil, @version="HTTP/1.1", @cookies=nil, @query_params=nil, @uri=nil, @remote_address=nil, @expect_continue=false, @resource="http://www.google.com/">, @trafficType=HTTP, @tunnelMode=false)
+STDOUT.puts context.stats # => Carton::Stats(@clientAuthentication=Basic, @remoteAddress=#<Carton::RemoteAddress:0x10c76cc20 @address="www.google.com", @port=80>, @requestPayload=#<HTTP::Request:0x10c773cb0 @method="GET", @headers=HTTP::Headers{"Host" => "www.google.com", "Proxy-Authorization" => "Basic YWRtaW46YWJjMTIz", "User-Agent" => "curl/7.68.0", "Accept" => "*/*", "Proxy-Connection" => "Keep-Alive"}, @body=nil, @version="HTTP/1.1", @cookies=nil, @query_params=nil, @uri=nil, @remote_address=nil, @expect_continue=false, @resource="http://www.google.com/">, @trafficType=HTTP, @tunnelMode=false)
 ```
 
 ### Used as Shard
@@ -142,14 +142,14 @@ STDOUT.puts context.stats # => Orange::Stats(@clientAuthentication=Basic, @remot
 Add this to your application's shard.yml:
 ```yaml
 dependencies:
-  orange:
-    github: 636f7374/orange.cr
+  carton:
+    github: 636f7374/carton.cr
 ```
 
 ### Installation
 
 ```bash
-$ git clone https://github.com/636f7374/orange.cr.git
+$ git clone https://github.com/636f7374/carton.cr.git
 ```
 
 ## Development
@@ -158,12 +158,9 @@ $ git clone https://github.com/636f7374/orange.cr.git
 $ make test
 ```
 
-## References
-
-
 ## Credit
 
-* [\_Icon::wanicon/fruits](https://www.flaticon.com/packs/fruits-and-vegetables-48)
+* [\_Icon::Wanicon/ProductsPackaging](https://www.flaticon.com/packs/products-packaging)
 
 ## Contributors
 

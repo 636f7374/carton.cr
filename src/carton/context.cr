@@ -1,4 +1,4 @@
-module Orange
+module Carton
   class Context
     getter client : Socket
     getter dnsResolver : Durian::Resolver
@@ -8,7 +8,7 @@ module Orange
 
     def initialize(@client : Socket, @dnsResolver : Durian::Resolver, @timeout : TimeOut = TimeOut.new)
       @clientEstablish = false
-      @remote = Orange.empty_io
+      @remote = Carton.empty_io
     end
 
     def remote=(value : IO)

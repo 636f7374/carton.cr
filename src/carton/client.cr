@@ -1,4 +1,4 @@
-module Orange
+module Carton
   class Client < IO
     property wrapped : IO
 

@@ -1,4 +1,4 @@
-module Orange
+module Carton
   class Socket < IO
     property wrapped : IO
 
@@ -21,7 +21,7 @@ module Orange
       @authentication || Authentication::None
     end
 
-    def on_auth=(value : Proc(String, String?, Orange::Verify))
+    def on_auth=(value : Proc(String, String?, Carton::Verify))
       @onAuth = value
     end
 
@@ -168,7 +168,7 @@ module Orange
     end
 
     def reject_establish!
-      write Orange.deny_payload.to_slice
+      write Carton.deny_payload.to_slice
       flush
     end
 
@@ -231,7 +231,7 @@ module Orange
 
     def establish!
       if tunnel_mode
-        write Orange.establish_payload.to_slice
+        write Carton.establish_payload.to_slice
         flush
       end
 
