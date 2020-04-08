@@ -26,7 +26,7 @@
   * [mamantoha / http_proxy](https://github.com/mamantoha/http_proxy)
   * These designs did not meet my project standards, so I redesigned it.
 * If you want to use SOCKS5? I have successfully developed.
-  * [⛵️ Available - Crystal SOCKS5 Client and Server](https://github.com/636f7374/tomato.cr)
+  * [⛵️ Available - Crystal SOCKS5 Client and Server](https://github.com/636f7374/herbal.cr)
 
 ## Features
 
