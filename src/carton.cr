@@ -1,5 +1,5 @@
 require "immutable"
-require "papaya"
+require "wrench"
 require "durian"
 require "socket"
 require "http"
