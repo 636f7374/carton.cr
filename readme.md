@@ -161,6 +161,7 @@ $ make test
 ## Credit
 
 * [\_Icon::Wanicon/ProductsPackaging](https://www.flaticon.com/packs/products-packaging)
+* [\_Icon::Freepik/SustainableEnergy](https://www.flaticon.com/packs/sustainable-energy-46)
 
 ## Contributors
 
