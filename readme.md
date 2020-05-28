@@ -39,10 +39,6 @@
   * Pluggable design
 * ...
 
-## Tips
-
-* Why is it named `Carton.cr`? it's just random six-word English words.
-
 ## Usage
 
 * Simple Client
