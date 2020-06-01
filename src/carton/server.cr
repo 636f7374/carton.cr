@@ -39,6 +39,7 @@ class Carton::Server
 
   def process!(socket : Socket, skip_establish : Bool = false) : Socket
     # HandShake
+
     begin
       handshake = socket.handshake!
 

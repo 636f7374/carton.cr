@@ -4,11 +4,11 @@ class Carton::Extract < IO
   property sync_close : Bool
   property? closed : Bool
 
-  def initialize(@wrapped, @extract, @sync_close : Bool = true)
+  def initialize(@wrapped : IO, @extract : IO::Memory, @sync_close : Bool = true)
     @closed = false
   end
 
-  def self.new(wrapped, extract, sync_close : Bool = true, &block : Extract ->)
+  def self.new(wrapped : IO, extract : IO::Memory, sync_close : Bool = true, &block : Extract ->)
     yield new wrapped, extract, sync_close
   end
 
