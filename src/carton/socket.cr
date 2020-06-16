@@ -28,12 +28,12 @@ class Carton::Socket < IO
     @onAuth
   end
 
-  def remote_address=(value : RemoteAddress)
-    @remoteAddress = value
+  def target_remote_address=(value : RemoteAddress)
+    @targetRemoteAddress = value
   end
 
-  def remote_address
-    @remoteAddress
+  def target_remote_address
+    @targetRemoteAddress
   end
 
   def request_payload=(value : HTTP::Request)
@@ -94,7 +94,7 @@ class Carton::Socket < IO
     _wrapped.write_timeout if _wrapped.responds_to? :write_timeout
   end
 
-  def wrapped_local_address : ::Socket::Address?
+  def local_address : ::Socket::Address?
     _wrapped = wrapped
 
     if _wrapped.responds_to? :local_address
@@ -103,7 +103,7 @@ class Carton::Socket < IO
     end
   end
 
-  def wrapped_remote_address : ::Socket::Address?
+  def remote_address : ::Socket::Address?
     _wrapped = wrapped
 
     if _wrapped.responds_to? :remote_address
@@ -116,7 +116,7 @@ class Carton::Socket < IO
     wrapped.read slice
   end
 
-  def write(slice : Bytes) : Nil
+  def write(slice : Bytes) : Int64
     wrapped.write slice
   end
 
@@ -179,7 +179,7 @@ class Carton::Socket < IO
     port = traffic_type.try &.to_i unless port
     raise UnknownFlag.new unless port
 
-    self.remote_address = RemoteAddress.new host, port
+    self.target_remote_address = RemoteAddress.new host, port
     self.request_payload = request
     self.tunnel_mode = request.connect?
     self.traffic_type = Traffic::HTTP unless tunnel_mode

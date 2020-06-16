@@ -25,10 +25,10 @@ class Carton::Context
   def connect_remote!
     return unless remote.is_a? IO::Memory if remote
     raise UnEstablish.new unless clientEstablish
-    raise UnknownFlag.new unless remote_address = client.remote_address
+    raise UnknownFlag.new unless target_remote_address = client.target_remote_address
 
-    host = remote_address.host
-    port = remote_address.port
+    host = target_remote_address.host
+    port = target_remote_address.port
     remote = Durian::TCPSocket.connect host, port, dnsResolver, timeout.connect
 
     self.remote = remote
