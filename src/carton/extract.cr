@@ -35,7 +35,7 @@ class Carton::Extract < IO
     extract.pos == extract.size
   end
 
-  def write(slice : Bytes) : Int64
+  def write(slice : Bytes) : Nil
     raise "Read only IO, does not support writing"
   end
 

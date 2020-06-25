@@ -116,7 +116,7 @@ class Carton::Socket < IO
     wrapped.read slice
   end
 
-  def write(slice : Bytes) : Int64?
+  def write(slice : Bytes) : Nil
     wrapped.write slice
   end
 
