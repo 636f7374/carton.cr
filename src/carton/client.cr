@@ -4,19 +4,19 @@ class Carton::Client < IO
   def initialize(@wrapped : IO)
   end
 
-  def self.new(host : String, port : Int32, dnsResolver : Durian::Resolver, connectTimeout : Int | Float? = nil)
+  def self.new(host : String, port : Int32, dnsResolver : Durian::Resolver = Durian::Resolver.new, connectTimeout : Int | Float? = nil)
     wrapped = Durian::TCPSocket.connect host, port, dnsResolver, connectTimeout
 
     new wrapped
   end
 
-  def self.new(ip_address : ::Socket::IPAddress, dnsResolver : Durian::Resolver, connectTimeout : Int | Float? = nil)
+  def self.new(ip_address : ::Socket::IPAddress, dnsResolver : Durian::Resolver = Durian::Resolver.new, connectTimeout : Int | Float? = nil)
     wrapped = TCPSocket.connect ip_address, connectTimeout
 
     new wrapped
   end
 
-  def self.new(host : String, port : Int32, dnsResolver : Durian::Resolver, timeout : TimeOut = TimeOut.new)
+  def self.new(host : String, port : Int32, dnsResolver : Durian::Resolver = Durian::Resolver.new, timeout : TimeOut = TimeOut.new)
     wrapped = Durian::TCPSocket.connect host, port, dnsResolver, timeout.connect
     wrapped.read_timeout = timeout.read
     wrapped.write_timeout = timeout.write
@@ -24,7 +24,7 @@ class Carton::Client < IO
     new wrapped
   end
 
-  def self.new(ip_address : ::Socket::IPAddress, dnsResolver : Durian::Resolver, timeout : TimeOut = TimeOut.new)
+  def self.new(ip_address : ::Socket::IPAddress, dnsResolver : Durian::Resolver = Durian::Resolver.new, timeout : TimeOut = TimeOut.new)
     wrapped = TCPSocket.connect ip_address, connectTimeout, timeout.connect
     wrapped.read_timeout = timeout.read
     wrapped.write_timeout = timeout.write

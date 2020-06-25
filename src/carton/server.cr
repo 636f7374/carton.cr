@@ -2,7 +2,7 @@ class Carton::Server
   getter wrapped : ::Socket::Server
   getter dnsResolver : Durian::Resolver
 
-  def initialize(@wrapped : ::Socket::Server, @dnsResolver : Durian::Resolver)
+  def initialize(@wrapped : ::Socket::Server, @dnsResolver : Durian::Resolver = Durian::Resolver.new)
   end
 
   def authentication=(value : Authentication)
