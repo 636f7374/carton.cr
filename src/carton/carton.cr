@@ -52,7 +52,7 @@ module Carton
     end
   end
 
-  class RemoteAddress
+  class DestinationAddress
     property host : String
     property port : Int32
 

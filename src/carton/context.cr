@@ -1,56 +1,56 @@
 class Carton::Context
-  getter client : Socket
+  getter source : Socket
   getter dnsResolver : Durian::Resolver
   property timeout : TimeOut
-  property clientEstablish : Bool
-  property remote : IO
+  property sourceEstablish : Bool
+  property destination : IO
 
-  def initialize(@client : Socket, @dnsResolver : Durian::Resolver, @timeout : TimeOut = TimeOut.new)
-    @clientEstablish = false
-    @remote = Carton.empty_io
+  def initialize(@source : Socket, @dnsResolver : Durian::Resolver, @timeout : TimeOut = TimeOut.new)
+    @sourceEstablish = false
+    @destination = Carton.empty_io
   end
 
-  def remote=(value : IO)
-    @remote = value
+  def destination=(value : IO)
+    @destination = value
   end
 
-  def remote
-    @remote
+  def destination
+    @destination
   end
 
   def stats
-    Stats.from_socket client
+    Stats.from_socket source
   end
 
-  def connect_remote!
-    return unless remote.is_a? IO::Memory if remote
-    raise UnEstablish.new unless clientEstablish
-    raise UnknownFlag.new unless target_remote_address = client.target_remote_address
+  def connect_destination!
+    return unless destination.is_a? IO::Memory if destination
+    raise UnEstablish.new unless sourceEstablish
+    raise UnknownFlag.new unless destination_address = source.destination_address
 
-    host = target_remote_address.host
-    port = target_remote_address.port
-    remote = Durian::TCPSocket.connect host, port, dnsResolver, timeout.connect
+    host = destination_address.host
+    port = destination_address.port
+    destination = Durian::TCPSocket.connect host, port, dnsResolver, timeout.connect
 
-    self.remote = remote
-    remote.read_timeout = timeout.read
-    remote.write_timeout = timeout.write
+    self.destination = destination
+    destination.read_timeout = timeout.read
+    destination.write_timeout = timeout.write
 
-    remote
+    destination
   end
 
   def all_close
-    client.close rescue nil
-    remote.close rescue nil
+    source.close rescue nil
+    destination.close rescue nil
   end
 
   def transport
-    _transport = Transport.new client, remote
+    _transport = Transport.new source, destination
     _transport.perform
   end
 
   def perform
     begin
-      connect_remote!
+      connect_destination!
     rescue ex
       return all_close
     end
@@ -58,24 +58,24 @@ class Carton::Context
     transport
   end
 
-  def client_establish
-    client_establish rescue nil
+  def source_establish
+    source_establish rescue nil
   end
 
   def reject_establish
     reject_establish rescue nil
-    client.close
+    source.close
   end
 
-  def client_establish!
-    client.establish
-    self.clientEstablish = true
+  def source_establish!
+    source.establish
+    self.sourceEstablish = true
   end
 
   private def reject_establish!
-    return if clientEstablish
+    return if sourceEstablish
 
-    client.reject_establish!
+    source.reject_establish!
   end
 
   def reject_establish

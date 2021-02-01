@@ -6,8 +6,8 @@ struct Carton::Stats
     @clientAuthentication = value
   end
 
-  def target_remote_address=(value : RemoteAddress?)
-    @targetRemoteAddress = value
+  def destination_address=(value : DestinationAddress?)
+    @destinationAddress = value
   end
 
   def request_payload=(value : HTTP::Request?)
@@ -38,7 +38,7 @@ struct Carton::Stats
     stats = new
 
     stats.client_authentication = socket.client_authentication
-    stats.target_remote_address = socket.target_remote_address
+    stats.destination_address = socket.destination_address
     stats.request_payload = socket.request_payload
     stats.tunnel_mode = socket.tunnel_mode
     stats.traffic_type = socket.traffic_type

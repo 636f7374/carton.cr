@@ -28,12 +28,12 @@ class Carton::Socket < IO
     @onAuth
   end
 
-  def target_remote_address=(value : RemoteAddress)
-    @targetRemoteAddress = value
+  def destination_address=(value : DestinationAddress)
+    @destinationAddress = value
   end
 
-  def target_remote_address
-    @targetRemoteAddress
+  def destination_address
+    @destinationAddress
   end
 
   def request_payload=(value : HTTP::Request)
@@ -179,7 +179,7 @@ class Carton::Socket < IO
     port = traffic_type.try &.to_i unless port
     raise UnknownFlag.new unless port
 
-    self.target_remote_address = RemoteAddress.new host, port
+    self.destination_address = DestinationAddress.new host, port
     self.request_payload = request
     self.tunnel_mode = request.connect?
     self.traffic_type = Traffic::HTTP unless tunnel_mode
