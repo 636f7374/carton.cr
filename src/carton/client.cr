@@ -104,6 +104,16 @@ class Carton::Client < IO
     _wrapped.write_timeout if _wrapped.responds_to? :write_timeout
   end
 
+  def local_address : ::Socket::Address?
+    _wrapped = wrapped
+    _wrapped.responds_to?(:local_address) ? _wrapped.local_address : nil
+  end
+
+  def remote_address : ::Socket::Address?
+    _wrapped = wrapped
+    _wrapped.responds_to?(:remote_address) ? _wrapped.remote_address : nil
+  end
+
   def connect!(ip_address : ::Socket::IPAddress)
     connect! wrapped, ip_address.address, ip_address.port
   end
