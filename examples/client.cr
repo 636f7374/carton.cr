@@ -2,17 +2,17 @@ require "../src/carton.cr"
 
 # Durian
 
-servers = [] of Durian::Resolver::Server
-servers << Durian::Resolver::Server.new ipAddress: Socket::IPAddress.new("8.8.8.8", 53_i32), protocol: Durian::Protocol::UDP
-servers << Durian::Resolver::Server.new ipAddress: Socket::IPAddress.new("1.1.1.1", 53_i32), protocol: Durian::Protocol::UDP
+dns_servers = [] of Durian::Resolver::Server
+dns_servers << Durian::Resolver::Server.new ipAddress: Socket::IPAddress.new("8.8.8.8", 53_i32), protocol: Durian::Protocol::UDP
+dns_servers << Durian::Resolver::Server.new ipAddress: Socket::IPAddress.new("1.1.1.1", 53_i32), protocol: Durian::Protocol::UDP
 
-resolver = Durian::Resolver.new servers
-resolver.ip_cache = Durian::Cache::IPAddress.new
+dns_resolver = Durian::Resolver.new dns_servers
+dns_resolver.ip_cache = Durian::Cache::IPAddress.new
 
 # Carton
 
 begin
-  client = Carton::Client.new "0.0.0.0", 1234_i32, resolver
+  client = Carton::Client.new "0.0.0.0", 1234_i32, dns_resolver
 
   # Authentication (Optional)
   # client.authentication = Carton::Authentication::Basic

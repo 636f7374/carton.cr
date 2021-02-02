@@ -1,24 +1,24 @@
 require "../src/carton.cr"
 
 def handle_client(context : Carton::Context)
-  STDOUT.puts context.stats
+  STDOUT.puts [context.stats]
 
   context.perform
 end
 
 # Durian
 
-servers = [] of Durian::Resolver::Server
-servers << Durian::Resolver::Server.new ipAddress: Socket::IPAddress.new("8.8.8.8", 53_i32), protocol: Durian::Protocol::UDP
-servers << Durian::Resolver::Server.new ipAddress: Socket::IPAddress.new("1.1.1.1", 53_i32), protocol: Durian::Protocol::UDP
+dns_servers = [] of Durian::Resolver::Server
+dns_servers << Durian::Resolver::Server.new ipAddress: Socket::IPAddress.new("8.8.8.8", 53_i32), protocol: Durian::Protocol::UDP
+dns_servers << Durian::Resolver::Server.new ipAddress: Socket::IPAddress.new("1.1.1.1", 53_i32), protocol: Durian::Protocol::UDP
 
-resolver = Durian::Resolver.new servers
-resolver.ip_cache = Durian::Cache::IPAddress.new
+dns_resolver = Durian::Resolver.new dns_servers
+dns_resolver.ip_cache = Durian::Cache::IPAddress.new
 
 # Carton
 
 tcp_server = TCPServer.new "0.0.0.0", 1234_i32
-carton = Carton::Server.new tcp_server, resolver
+carton = Carton::Server.new tcp_server, dns_resolver
 carton.authentication = Carton::Authentication::None
 carton.client_timeout = Carton::TimeOut.new
 carton.remote_timeout = Carton::TimeOut.new

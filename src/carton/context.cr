@@ -22,20 +22,22 @@ class Carton::Context
     Stats.from_socket source
   end
 
-  def connect_destination!
-    return unless destination.is_a? IO::Memory if destination
+  def connect_destination! : IO
+    _destination = destination
+    return _destination unless _destination.is_a? IO::Memory if _destination
+
     raise UnEstablish.new unless sourceEstablish
     raise UnknownFlag.new unless destination_address = source.destination_address
 
     host = destination_address.host
     port = destination_address.port
-    destination = Durian::TCPSocket.connect host, port, dnsResolver, timeout.connect
+    socket = Durian::TCPSocket.connect host, port, dnsResolver, timeout.connect
 
-    self.destination = destination
-    destination.read_timeout = timeout.read
-    destination.write_timeout = timeout.write
+    self.destination = socket
+    socket.read_timeout = timeout.read
+    socket.write_timeout = timeout.write
 
-    destination
+    socket
   end
 
   def all_close
@@ -52,7 +54,9 @@ class Carton::Context
     begin
       connect_destination!
     rescue ex
-      return all_close
+      all_close
+
+      return
     end
 
     transport
@@ -60,11 +64,6 @@ class Carton::Context
 
   def source_establish
     source_establish rescue nil
-  end
-
-  def reject_establish
-    reject_establish rescue nil
-    source.close
   end
 
   def source_establish!
@@ -76,6 +75,11 @@ class Carton::Context
     return if sourceEstablish
 
     source.reject_establish!
+  end
+
+  def reject_establish
+    reject_establish rescue nil
+    source.close
   end
 
   def reject_establish
